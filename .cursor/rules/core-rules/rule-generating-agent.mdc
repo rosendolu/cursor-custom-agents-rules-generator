@@ -5,7 +5,7 @@ alwaysApply: true
 ---
 # Cursor Rules Format
 
-## Template Structure for Rules Files
+## Template Structure for Rules Files(FrontMatter must include in new generated rules)
 
 ```mdc
 ---

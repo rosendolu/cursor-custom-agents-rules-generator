@@ -8,6 +8,13 @@
         "-y",
         "tavily-mcp@0.1.3"
       ]
+    },
+    "api fox docs": {
+      "command": "npx",
+      "args": ["-y", "apifox-mcp-server@latest", "--project=<project-id>"],
+      "env": {
+        "APIFOX_ACCESS_TOKEN": "<access-token>"
+      }
     }
   }
 }

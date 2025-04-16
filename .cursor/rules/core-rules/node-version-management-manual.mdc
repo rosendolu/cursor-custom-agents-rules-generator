@@ -1,0 +1,92 @@
+# 🔧 Node.js Version Management Guidelines
+
+## Critical Rules
+
+- 📋 Version Detection Priority
+  - MUST check version in following order:
+    1. `.nvmrc` file in project root
+    2. `engines.node` field in `package.json`
+    3. Default to latest LTS if neither exists
+
+- 🔒 Version Enforcement
+  - Enforce exact Node.js version match with `.nvmrc`
+  - Use `>=` in package.json engines field for minimum version requirement
+  - Document Node.js version requirements in project README.md
+  - Add version check in project's start/build scripts
+
+- 🚀 Feature Compatibility
+  - Only use JavaScript features supported by specified Node.js version
+  - Document any version-specific features in code comments
+  - Include polyfills for features not available in target Node.js version
+  - Test application in both minimum and latest supported Node.js versions
+
+- ⚙️ Development Environment
+  - Use `nvm` or similar tool for version management
+  - Set up CI/CD to test against specified Node.js version
+  - Include version check in development setup scripts
+  - Document version switching instructions in README.md
+
+## Examples
+
+<example>
+  # Valid Project Setup Example
+  
+  # .nvmrc
+  18.19.0
+
+  # package.json
+  {
+    "name": "my-project",
+    "engines": {
+      "node": ">=18.19.0"
+    },
+    "scripts": {
+      "prestart": "node scripts/check-node-version.js",
+      "start": "node index.js"
+    }
+  }
+
+  # scripts/check-node-version.js
+  const semver = require('semver');
+  const { engines } = require('./package.json');
+  const version = engines.node;
+  
+  if (!semver.satisfies(process.version, version)) {
+    console.error(
+      `Required node version ${version} not satisfied with current version ${process.version}.`
+    );
+    process.exit(1);
+  }
+
+  # README.md
+  ## Requirements
+  - Node.js version: 18.19.0 (LTS)
+  - Use `nvm use` to automatically switch to the correct version
+</example>
+
+<example type="invalid">
+  # Invalid Project Setup Example
+  
+  # Missing .nvmrc file
+  
+  # package.json (❌ Incorrect version specification)
+  {
+    "name": "my-project",
+    "engines": {
+      "node": "18.19.0"  // ❌ Using exact version instead of >=
+    },
+    "scripts": {
+      "start": "node index.js"  // ❌ No version check
+    }
+  }
+
+  # index.js (❌ Using features without version check)
+  // Using features without checking Node.js version compatibility
+  const { fetch } = globalThis;  // ❌ No version check or polyfill
+  
+  // ❌ No documentation about version requirements
+  const data = await fetch('https://api.example.com/data');
+  
+  // ❌ Using new features without fallback
+  const config = structuredClone(defaultConfig);
+</example> 
