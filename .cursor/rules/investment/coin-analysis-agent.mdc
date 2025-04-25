@@ -1,0 +1,368 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Cryptocurrency Technical and On-Chain Analysis Guidelines
+
+## Critical Rules
+
+- MUST analyze multiple time frames:
+
+  - Primary: 4H and 1D charts
+  - Secondary: 15min, 1H, 1W (for context)
+  - Long-term: 1M (for macro view)
+
+- MUST fetch real-time market data using public APIs in this priority order:
+
+  1. Binance API (price & trading data)
+  2. CoinGecko API (market data)
+  3. CryptoCompare API (aggregated data)
+  4. Glassnode API (on-chain metrics)
+  5. Nansen API (DeFi metrics)
+
+- REQUIRED on-chain indicators:
+
+  1. Network Health:
+     - Active Addresses (24h)
+     - New Addresses Growth
+     - Transaction Count
+     - Network Hash Rate
+  2. HODL Metrics:
+     - HODL Waves
+     - Average Coin Age
+     - Supply Last Active
+     - Realized HODL Ratio
+  3. Whale Activity:
+     - Large Transaction Volume
+     - Whale Transaction Count (>$100k)
+     - Exchange Inflow/Outflow
+     - Whale Wallet Changes
+  4. Mining Metrics:
+     - Miner Revenue
+     - Miner Position Change
+     - Hash Ribbon
+     - Puell Multiple
+  5. DeFi Metrics (if applicable):
+     - Total Value Locked (TVL)
+     - Protocol Revenue
+     - Unique Users
+     - Volume/TVL Ratio
+
+- REQUIRED technical indicators for each time frame:
+
+  1. Trend Indicators:
+     - Moving Averages (MA): 7/25/99 periods
+     - MACD (12,26,9)
+     - Directional Movement Index (DMI)
+     - Ichimoku Cloud (9,26,52,26)
+  2. Momentum Indicators:
+     - Relative Strength Index (RSI-14)
+     - Stochastic Oscillator (14,3,3)
+     - Money Flow Index (MFI-14)
+     - Williams %R (14)
+  3. Volatility Indicators:
+     - Bollinger Bands (20,2)
+     - Average True Range (ATR-14)
+     - Keltner Channels
+  4. Volume Indicators:
+     - On-Balance Volume (OBV)
+     - Volume RSI
+     - Chaikin Money Flow (CMF-20)
+     - Accumulation/Distribution Line
+
+- MUST include for each indicator:
+
+  - Current value
+  - Signal interpretation
+  - Calculation formula
+  - Historical context (at least 3 previous periods)
+  - Divergence analysis with price
+  - Time frame correlation analysis
+
+- REQUIRED additional analysis dimensions:
+
+  1. Market Sentiment Metrics:
+
+     - Fear & Greed Index
+     - Social Media Metrics:
+       - Twitter/X Mentions
+       - Reddit Activity
+       - Telegram Group Growth
+       - Discord Activity
+     - Google Trends Data
+     - News Sentiment Analysis
+     - Funding Rate Analysis
+     - Long/Short Ratio
+     - Options Put/Call Ratio
+
+  2. Derivatives Market Analysis:
+
+     - Open Interest Analysis
+     - Funding Rates Across Exchanges
+     - Futures Basis
+     - Options Market:
+       - Implied Volatility Skew
+       - Maximum Pain Point
+       - Options Volume Profile
+       - Delta Neutral Levels
+     - Liquidation Levels:
+       - Long Liquidation Walls
+       - Short Liquidation Points
+     - Aggregated CVD (Cumulative Volume Delta)
+
+  3. Cross-Chain & Inter-Market Analysis:
+
+     - Cross-chain Volume Flows
+     - Bridge Activity Monitoring
+     - CEX vs DEX Volume Comparison
+     - Stablecoin Flows:
+       - USDT Dominance
+       - USDC Supply Changes
+       - Stablecoin Velocity
+     - Layer 2 Activity:
+       - L2 TVL Changes
+       - Cross-L2 Bridges Volume
+       - L2 User Growth
+     - Correlation Analysis:
+       - DXY Correlation
+       - SPX Correlation
+       - Gold/BTC Correlation
+       - Inter-crypto Correlations
+
+  4. Market Microstructure:
+
+     - Order Book Analysis:
+       - Depth Analysis
+       - Bid-Ask Spread
+       - Order Book Imbalance
+     - Market Impact Analysis:
+       - Slippage Metrics
+       - Liquidity Scores
+     - Volume Profile Analysis:
+       - VPVR (Volume Profile Visible Range)
+       - POC (Point of Control)
+       - Value Area Analysis
+     - Market Efficiency:
+       - Price-Volume Relationship
+       - Market Efficiency Ratio
+       - Arbitrage Opportunities
+
+  5. Regulatory & Macro Environment:
+
+     - Regulatory News Impact
+     - Institutional Flows:
+       - GBTC Premium/Discount
+       - ETF Flows
+       - CME Futures Volume
+     - Macro Indicators:
+       - Interest Rate Impact
+       - Inflation Data Correlation
+       - Currency Market Impact
+     - Geographic Distribution:
+       - Trading Volume by Region
+       - Regulatory Risk by Region
+       - Mining Distribution
+
+  6. Smart Money Analysis:
+     - Wallet Profiling:
+       - Smart Money Flow Index
+       - Early Adopter Wallet Activity
+       - VC/Institution Wallet Tracking
+     - DeFi Smart Money:
+       - Yield Farming Trends
+       - Protocol Revenue Analysis
+       - TVL Distribution
+     - NFT Market Correlation:
+       - Blue Chip NFT Floor Prices
+       - NFT Market Volume
+       - Wash Trading Analysis
+
+- Analysis structure MUST contain:
+
+  ```markdown
+  ### 📊 Market Overview
+
+  - Current Price & Changes (24h, 7d)
+  - Trading Volume Analysis
+  - Market Dominance
+  - Correlation with Major Assets
+
+  ### 🔗 On-Chain Analysis
+
+  #### Network Metrics
+
+  - Active Addresses Trend
+  - Transaction Volume & Count
+  - Network Health Indicators
+
+  #### Holder Behavior
+
+  - HODL Wave Analysis
+  - Whale Activity
+  - Exchange Flows
+
+  #### Mining/Staking Metrics
+
+  - Hash Rate/Staking Rate
+  - Miner/Validator Behavior
+  - Network Security Metrics
+
+  ### 📈 Technical Analysis (4H & 1D)
+
+  #### Trend Analysis
+
+  - MA Analysis & Crossovers
+  - Trend Strength (DMI/ADX)
+  - Support/Resistance Levels
+
+  #### Momentum Analysis
+
+  - RSI Conditions
+  - Stochastic Signals
+  - MACD Configuration
+
+  #### Volatility Analysis
+
+  - BB Width & Position
+  - ATR & Volatility State
+
+  #### Volume Analysis
+
+  - Volume Trend
+  - Money Flow Indicators
+
+  ### ⚠️ Risk Assessment
+
+  - Technical Risk Levels
+  - On-Chain Risk Metrics
+  - Market Structure Risks
+  - Correlation Risks
+
+  ### 🎯 Trading Zones
+
+  - Entry Points (4H & 1D)
+  - Stop Loss Levels
+  - Take Profit Targets
+
+  ### 🌐 Extended Market Analysis
+
+  #### Sentiment Analysis
+
+  - Fear & Greed Index Interpretation
+  - Social Media Metrics Analysis
+  - News Sentiment Impact
+
+  #### Derivatives Market Status
+
+  - Open Interest Analysis
+  - Funding Rate Trends
+  - Options Market Overview
+
+  #### Cross-Chain Dynamics
+
+  - Inter-chain Flow Analysis
+  - Bridge Activity Status
+  - Stablecoin Movement Analysis
+
+  #### Market Microstructure
+
+  - Order Book Health
+  - Volume Profile Analysis
+  - Market Efficiency Metrics
+
+  #### Macro & Regulatory
+
+  - Institutional Activity
+  - Regulatory Impact Assessment
+  - Macro Correlation Analysis
+
+  #### Smart Money Tracking
+
+  - Whale Wallet Analysis
+  - DeFi Smart Money Flows
+  - NFT Market Correlation
+  ```
+
+## Examples
+
+<example>
+### 📊 BTC/USDT Comprehensive Analysis (2025-04-25)
+
+#### Market Sentiment
+
+- Fear & Greed Index: 65 (Greed)
+- Social Sentiment: Positive (24h change: +15%)
+- Funding Rate (Binance): 0.01% (Neutral)
+- Options Put/Call Ratio: 0.75 (Bullish)
+
+#### Derivatives Overview
+
+- Open Interest: $12.5B (↑8% 24h)
+- Aggregate Funding Rate: 0.012% (Slightly Bullish)
+- Max Pain Point: $92,000
+- IV Skew: Right-skewed (Calls Premium)
+
+#### Cross-Chain Analysis
+
+- Bridge Flows: Net Positive ($245M 24h)
+- Stablecoin Movement: USDT Inflow ($890M 24h)
+- L2 TVL Change: +5.2% (24h)
+
+#### On-Chain Metrics (24h)
+
+- Active Addresses: 1.2M (↑5.2%)
+- New Addresses: 460K (↑3.1%)
+- Exchange Outflow: 22,450 BTC
+- Realized HODL Ratio: 1.85
+- Calculation:
+  Active Address Growth = (Today's Active - Yesterday's Active) / Yesterday's Active
+  RHODL = Realized_Cap(USD) / Market_Cap(USD)
+
+#### Technical Analysis (4H)
+
+- MA Configuration:
+
+  - MA7: 92,450 (↑)
+  - MA25: 88,200 (↑)
+  - MA99: 85,600 (→)
+  - Status: Bullish (MA7 > MA25 > MA99)
+
+- MACD (12,26,9):
+  - MACD Line: 2.45
+  - Signal Line: 1.98
+  - Histogram: 0.47
+  - Calculation:
+    MACD Line = EMA(12) - EMA(26)
+    Signal Line = EMA(9) of MACD Line
+
+[Additional indicators following the same detailed format...]
+
+### 🎯 Trading Zones (4H Frame)
+
+Entry Zones: 92,800 - 93,200
+
+- Order Book Support: Heavy bids at 92,500
+- Volume Profile POC: 92,850
+- Options Market Support: 92,000 (Max Pain)
+  Stop Loss: 91,800 (Below 4H structure)
+  Take Profit: 95,800 (1.618 Fib + OI resistance)
+  </example>
+
+<example type="invalid">
+### Basic Market Analysis
+- Sentiment is good
+- Some whale buying
+- Funding is positive
+- Technical analysis bullish
+
+Problems:
+
+- No quantitative sentiment data
+- Missing derivatives analysis
+- No cross-market correlation
+- Incomplete order book analysis
+- No smart money tracking
+- Missing macro context
+  </example>
