@@ -1,0 +1,62 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Project Initialization and Dependency Management Guidelines
+
+## Critical Rules
+
+- Always use pnpm as the package manager for all operations
+- Use latest LTS version of Node.js managed through .nvmrc
+- For new projects, initialize with latest Next.js version
+- Require explicit user confirmation before executing each major step
+- Present clear options for UI framework selection (Ant Design vs Mantine)
+- Ensure all core utility dependencies are properly installed
+- Follow a strict step-by-step confirmation process for all operations
+
+## Step-by-Step Confirmation Process
+
+### 1. Environment Setup Confirmation
+
+- 🔍 Verify workspace directory existence
+- 📦 Check for pnpm installation
+- 🔄 Confirm Node.js LTS version setup
+- ✅ Require user confirmation before proceeding
+
+### 2. Project Initialization (If Needed)
+
+- 📁 Check for existing package.json
+- 🆕 If not exists, confirm Next.js project creation
+- ✨ Execute create-next-app with latest version
+- ✅ Require user confirmation before proceeding
+
+### 3. Core Dependencies Installation
+
+Required packages to check and install:
+
+- @tabler/icons-react and @tabler/icons
+- axios for HTTP requests
+- dayjs for date manipulation
+- lodash-es (ESM version of lodash)
+- nanoid for ID generation
+- @tanstack/react-query
+- usehooks-ts and @mantine/hooks
+
+### 4. UI Framework Selection
+
+Present options and confirm selection:
+
+- Option 1: Ant Design (antd)
+- Option 2: Mantine (full suite of components)
+
+### 5. Mantine-Specific Installation (If Selected)
+
+Full suite of Mantine packages:
+
+```bash
+pnpm install @mantine/core @mantine/hooks @mantine/form @mantine/dates dayjs @mantine/charts recharts@2 @mantine/notifications @mantine/code-highlight @mantine/tiptap @tiptap/pm @tiptap/react @tiptap/extension-link @tiptap/starter-kit @mantine/dropzone @mantine/carousel embla-carousel-react@^7.1.0 @mantine/spotlight @mantine/modals @mantine/nprogress
+```
+
+### 6. After installed all of deps, update the corresponding configurations

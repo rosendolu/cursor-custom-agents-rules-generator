@@ -1,0 +1,183 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Mantine-First Component Guidelines
+
+## Critical Rules
+
+- Always prioritize Mantine components over custom implementations:
+  - Check @mantine/core first for required components
+  - Use @mantine/hooks for common UI behaviors
+  - Leverage @mantine/form for form handling
+  - Utilize @mantine/notifications for toast messages
+  - Consider @mantine/dates for date/time inputs
+  - Use @mantine/dropzone for file upload interfaces
+  - Implement @mantine/carousel for image galleries
+  - Apply @mantine/spotlight for command palettes
+  
+- When using Mantine components:
+  - Use MantineProvider at the app root for theme configuration
+  - Leverage Mantine's built-in theme system for customization
+  - Follow Mantine's responsive design patterns
+  - Use Mantine's spacing and color system consistently
+  - Implement dark mode using Mantine's ColorSchemeProvider
+  
+- Only create custom components when:
+  - No suitable Mantine component exists
+  - Mantine's component requires extensive modification
+  - Project-specific design requirements cannot be met with Mantine
+  
+- For custom components:
+  - Follow Mantine's component API patterns
+  - Use Mantine's style system (createStyles or styles.* props)
+  - Maintain consistency with Mantine's theme variables
+  - Document why a custom component was needed
+  
+- Common component mappings:
+  ```typescript
+  // Prefer Mantine components over HTML elements
+  ✅ import { Button } from '@mantine/core';
+  ❌ <button>Click me</button>
+  
+  ✅ import { TextInput } from '@mantine/core';
+  ❌ <input type="text" />
+  
+  ✅ import { Select } from '@mantine/core';
+  ❌ <select></select>
+  
+  ✅ import { Modal } from '@mantine/core';
+  ❌ custom modal implementation
+  
+  ✅ import { Notification } from '@mantine/notifications';
+  ❌ custom toast implementation
+  ```
+
+## Examples
+
+<example>
+// Good example using Mantine components
+import { useState } from 'react';
+import {
+  TextInput,
+  PasswordInput,
+  Checkbox,
+  Button,
+  Group,
+  Stack,
+  Container,
+  Title,
+  Text,
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { showNotification } from '@mantine/notifications';
+
+export function LoginForm() {
+  const form = useForm({
+    initialValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      password: (value) => (value.length < 6 ? 'Password too short' : null),
+    },
+  });
+
+  const handleSubmit = form.onSubmit((values) => {
+    showNotification({
+      title: 'Login Successful',
+      message: 'Welcome back!',
+      color: 'green',
+    });
+  });
+
+  return (
+    <Container size="xs">
+      <Title order={2} mb="lg">Welcome Back</Title>
+      <form onSubmit={handleSubmit}>
+        <Stack spacing="md">
+          <TextInput
+            required
+            label="Email"
+            placeholder="your@email.com"
+            {...form.getInputProps('email')}
+          />
+          <PasswordInput
+            required
+            label="Password"
+            placeholder="Your password"
+            {...form.getInputProps('password')}
+          />
+          <Checkbox
+            label="Remember me"
+            {...form.getInputProps('rememberMe', { type: 'checkbox' })}
+          />
+          <Button type="submit" fullWidth>
+            Sign in
+          </Button>
+        </Stack>
+      </form>
+    </Container>
+  );
+}
+</example>
+
+<example type="invalid">
+// Bad example mixing custom implementations with HTML elements
+import React, { useState } from 'react';
+import './LoginForm.css';
+
+export function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Custom toast implementation
+    showCustomToast('Login successful');
+  };
+
+  return (
+    <div className="login-container">
+      <h2>Welcome Back</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="custom-input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="custom-input"
+          />
+        </div>
+        <label>
+          <input type="checkbox" /> Remember me
+        </label>
+        <button type="submit" className="custom-button">
+          Sign in
+        </button>
+      </form>
+    </div>
+  );
+}
+
+// Problems:
+// - Uses custom CSS instead of Mantine's styling system
+// - Implements custom form handling instead of @mantine/form
+// - Uses basic HTML elements instead of Mantine components
+// - Custom toast implementation instead of @mantine/notifications
+// - No form validation
+// - Inconsistent spacing and styling
+</example>

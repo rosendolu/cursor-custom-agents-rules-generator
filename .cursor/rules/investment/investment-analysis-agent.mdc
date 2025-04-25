@@ -1,6 +1,6 @@
 ---
-description: This rule is essential for maintaining consistency and quality in rule creation across the codebase. It must be followed whenever: (1) A user requests a new rule to be created, (2) An existing rule needs modification, (3) The user asks to remember certain behaviors or patterns, or (4) Future behavior changes are requested. This rule ensures proper organization, clear documentation, and effective rule application by defining standard formats, naming conventions, and content requirements. It's particularly crucial for maintaining the rule hierarchy, ensuring rules are discoverable by the AI, and preserving the effectiveness of the rule-based system. The rule system is fundamental to project consistency, code quality, and automated assistance effectiveness.
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 
@@ -22,21 +22,25 @@ alwaysApply: false
 Implement the following investor perspectives, each with their distinct analysis approach:
 
 ### Value Investors
+
 - **Warren Buffett**: Focus on wonderful companies at fair prices, economic moats, consistent earnings, quality management, and intrinsic value with margin of safety
 - **Charlie Munger**: Apply mental models, focus on high ROIC, pricing power, financial strength, business quality, and management integrity
 - **Ben Graham**: Seek statistical bargains, low P/E, low P/B, earnings stability, low debt, and significant margin of safety
 
 ### Growth Investors
+
 - **Phil Fisher**: Analyze sales growth trajectory, R&D investment, management quality, profit margins, and competitive position
 - **Cathie Wood**: Evaluate disruptive innovation, total addressable market, high growth rates, and network effects
 - **Peter Lynch**: Categorize stocks (slow growers, stalwarts, fast growers, turnarounds, asset plays), focus on PEG ratio
 
 ### Other Strategies
+
 - **Bill Ackman**: Evaluate business simplicity, predictability, dominance, potential catalysts, and shareholder returns
 - **Michael Burry**: Look for contrarian opportunities, overlooked companies, market misconceptions, and behavioral factors
 - **Stanley Druckenmiller**: Assess macro trends, momentum, thematic tailwinds, and concentrated opportunities
 
 ### Analysis Frameworks
+
 - **Fundamental Analysis**: Evaluate profitability metrics (ROE, ROA), growth metrics, valuation metrics (P/E, P/B), and financial health
 - **Technical Analysis**: Analyze price trends, momentum indicators, volume patterns, support/resistance levels, and chart patterns
 - **Sentiment Analysis**: Assess news sentiment, insider activity, and market psychology
@@ -46,6 +50,7 @@ Implement the following investor perspectives, each with their distinct analysis
 ## Analysis Process
 
 1. **Data Gathering**: For the requested ticker(s), gather key data points including:
+
    - Recent price and valuation metrics (P/E, P/B, EV/EBITDA)
    - Growth metrics (revenue growth, earnings growth)
    - Profitability metrics (margins, ROE, ROA)
@@ -54,22 +59,32 @@ Implement the following investor perspectives, each with their distinct analysis
    - Recent news sentiment and insider activity
 
 2. **Perspective Analysis**: For each selected investor perspective, analyze the stock considering:
+
    - Their historical investment philosophy
    - Their typical evaluation criteria
    - Known preferences and red flags
    - Assessment of current market conditions through their lens
 
 3. **Signal Generation**: For each perspective, generate:
+
    - A clear signal (Bullish/Bearish/Neutral)
    - A confidence score (0-100%)
    - Concise reasoning (3-5 key points)
    - Specific trading recommendation (Buy/Sell/Hold)
 
 4. **Portfolio Management**: When analyzing multiple stocks:
+
    - Compare relative attractiveness
    - Suggest portfolio allocation percentages
    - Consider diversification and risk factors
    - Provide overall portfolio recommendation
+
+5. **Documentation**: Save analysis results:
+   - Create docs directory if it doesn't exist
+   - Generate filename with timestamp (e.g., "analysis-TICKER-YYYY-MMDD-HHMM.md")
+   - Save complete analysis with all perspectives and recommendations
+   - Include metadata (analysis date, tickers analyzed, perspectives used)
+   - Maintain consistent markdown formatting for readability
 
 ## User Interaction Patterns
 
@@ -125,4 +140,4 @@ This analysis is for educational purposes only and not intended as investment ad
 
 <example>
 User: Analyze AAPL using Warren Buffett and Cathie Wood perspectives
-</example> 
+</example>

@@ -1,0 +1,191 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Architecture Competitor Analysis Guidelines
+
+## Critical Rules
+
+- All competitor analysis must be documented in the root `docs/competitor-analysis` directory:
+
+  - Create directory if it doesn't exist
+  - Use the following file structure:
+    ```
+    docs/
+    └── competitor-analysis/
+        ├── README.md           # Overview and summary
+        ├── {product-name}/     # One folder per product
+        │   ├── tech-stack.md   # Detailed technical analysis
+        │   └── architecture.md # Architectural decisions
+        └── comparison.md       # Cross-product comparison
+    ```
+
+- For each new architecture document or major architectural decision:
+
+  - Research and analyze at least 3 similar products or competitors in the market
+  - Document each competitor's technology stack in detail:
+    - Frontend frameworks and libraries
+    - Backend technologies and services
+    - Database solutions
+    - Cloud infrastructure and deployment
+    - Key third-party integrations
+    - Performance optimization techniques
+    - Security implementations
+  - Evaluate the pros and cons of each competitor's technical choices
+  - Use findings to inform and validate architectural decisions
+  - Include version numbers and release dates of major technologies used
+  - Document any known scalability issues or limitations
+  - Note any innovative technical solutions worth considering
+
+- Format the analysis using the following structure in each `tech-stack.md`:
+
+  ```markdown
+  # [Product Name] Technical Analysis
+
+  ## Tech Stack Overview 🔧
+
+  ### Frontend Technologies
+
+  - Framework: [Technologies with versions]
+  - UI Libraries: [List with versions]
+  - State Management: [Solutions used]
+  - Build Tools: [Tools with versions]
+
+  ### Backend Technologies
+
+  - Languages: [Technologies with versions]
+  - Frameworks: [List with versions]
+  - APIs: [API technologies used]
+
+  ### Database & Storage
+
+  - Primary Database: [Solutions used]
+  - Caching: [Caching solutions]
+  - File Storage: [Storage solutions]
+
+  ### Infrastructure
+
+  - Cloud Provider: [Provider details]
+  - Hosting: [Hosting solutions]
+  - CDN: [CDN if applicable]
+
+  ## Key Libraries & Tools 🛠️
+
+  - [Categorized list of significant libraries and tools]
+
+  ## Notable Technical Decisions 🎯
+
+  - [Unique architectural choices]
+
+  ## Performance & Scalability 📈
+
+  - [Performance metrics and solutions]
+  - [Scalability approaches]
+
+  ## Security Implementation 🔒
+
+  - [Security measures and protocols]
+
+  ## Strengths & Weaknesses
+
+  ### Strengths ✅
+
+  - [Technical advantages]
+
+  ### Weaknesses ❌
+
+  - [Technical limitations]
+  ```
+
+## Examples
+
+<example>
+# Discord Technical Analysis
+
+## Tech Stack Overview 🔧
+
+### Frontend Technologies
+
+- Framework: React 18.x, Electron 25.x
+- UI Libraries: styled-components 6.x
+- State Management: Redux 4.x
+- Build Tools: Webpack 5.x
+
+### Backend Technologies
+
+- Languages: Elixir 1.14, Python 3.11
+- Frameworks: Phoenix 1.7
+- APIs: REST, WebSocket
+
+### Database & Storage
+
+- Primary Database: Cassandra, PostgreSQL
+- Caching: Redis
+- File Storage: S3
+
+### Infrastructure
+
+- Cloud Provider: Google Cloud Platform
+- Hosting: Kubernetes
+- CDN: Cloudflare
+
+## Key Libraries & Tools 🛠️
+
+- WebRTC for voice/video
+- Opus codec for audio
+- React Query for data fetching
+- Socket.io for real-time communication
+
+## Notable Technical Decisions 🎯
+
+- Custom Gateway implementation for WebSocket connections
+- Elixir for handling millions of concurrent connections
+- Microservices architecture for scalability
+
+## Performance & Scalability 📈
+
+- WebSocket connection pooling
+- Redis caching layer
+- Load balancing across regions
+
+## Security Implementation 🔒
+
+- End-to-end encryption for voice
+- Rate limiting on API endpoints
+- OAuth2 authentication
+
+## Strengths & Weaknesses
+
+### Strengths ✅
+
+- Highly scalable real-time communication
+- Efficient media streaming
+- Global CDN distribution
+- Low latency voice/video
+
+### Weaknesses ❌
+
+- High infrastructure costs
+- Complex deployment requirements
+- Heavy client-side bundle
+  </example>
+
+<example type="invalid">
+docs/competitors.md:
+- Slack uses React
+- Microsoft Teams is built with Electron
+- Discord uses Python
+
+Problems:
+
+- Not following the required directory structure
+- No separate files per competitor
+- No version information
+- Missing detailed tech stack analysis
+- No evaluation of technical decisions
+- Insufficient number of competitors
+- No structured format
+- Missing strengths and weaknesses
+  </example>
