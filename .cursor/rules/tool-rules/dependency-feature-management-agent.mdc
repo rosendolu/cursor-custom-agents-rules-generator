@@ -1,0 +1,127 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# 📦 Dependency and Feature Management Guidelines
+
+## Critical Rules
+
+- 📝 Package Analysis Requirements
+
+  - MUST analyze `package.json` dependencies before implementing any feature
+  - MUST check both dependencies and devDependencies sections
+  - MUST verify peer dependencies for compatibility
+  - MUST respect version constraints and semver ranges
+  - MUST document any version-specific implementations
+
+- 🚀 Node.js Feature Implementation
+
+  - MUST check Node.js version from `.nvmrc` first, then `package.json` engines field
+  - MUST utilize latest available ECMAScript features compatible with the specified Node.js version
+  - MUST implement polyfills or fallbacks for features not available in the target Node.js version
+  - MUST document usage of version-specific Node.js features
+
+- 🎨 UI Component Implementation
+
+  - MUST use UI library components from specified versions in package.json
+  - MUST check component API compatibility with installed library version
+  - MUST implement features available in the current library version
+  - MUST NOT use features from newer versions not yet supported
+  - MUST follow library-specific best practices for the installed version
+
+- 🔄 Version Compatibility Checks
+  - MUST verify feature compatibility before implementation
+  - MUST check library documentation for the specific version being used
+  - MUST test implementations against the exact versions specified
+  - MUST maintain compatibility with minimum supported versions
+  - MUST document any version-specific workarounds or implementations
+
+## Examples
+
+<example>
+# Valid Implementation
+
+# package.json
+
+{
+"engines": {
+"node": ">=18.0.0"
+},
+"dependencies": {
+"react": "^18.2.0",
+"next": "^14.0.0",
+"@mui/material": "^5.15.0"
+}
+}
+
+# Component Implementation
+
+import { useState, useTransition } from 'react'; // React 18 feature
+import { Button, Dialog } from '@mui/material'; // MUI v5 components
+
+function MyComponent() {
+const [isPending, startTransition] = useTransition(); // React 18 feature
+const [open, setOpen] = useState(false);
+
+// MUI v5 Dialog with new props
+return (
+
+<Dialog
+open={open}
+onClose={() => setOpen(false)}
+fullScreen={false}
+scroll="paper" >
+<Button variant="contained">Click Me</Button>
+</Dialog>
+);
+}
+
+# Node.js Implementation
+
+// Using Node.js 18 fetch API
+const fetchData = async () => {
+const response = await fetch('https://api.example.com');
+return response.json();
+};
+</example>
+
+<example type="invalid">
+# Invalid Implementation
+
+# package.json
+
+{
+"engines": {
+"node": ">=16.0.0"
+},
+"dependencies": {
+"react": "^17.0.2",
+"@mui/material": "^4.12.0"
+}
+}
+
+# ❌ Using React 18 features with React 17
+
+function MyComponent() {
+const [isPending, startTransition] = useTransition(); // Not available in React 17
+
+// ❌ Using MUI v5 props with MUI v4
+return (
+
+<Dialog
+scroll="paper" // Prop not available in v4
+fullScreen={false} >
+<Button variant="contained">Click Me</Button>
+</Dialog>
+);
+}
+
+# ❌ Using Node.js 18 features in Node.js 16
+
+const fetchData = async () => {
+const response = await fetch('https://api.example.com'); // Global fetch not available
+return response.json();
+};
+</example>
