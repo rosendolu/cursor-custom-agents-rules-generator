@@ -8,176 +8,285 @@ alwaysApply: false
 
 ## Critical Rules
 
+- MUST output analysis in a text file (.txt) format with appropriate emojis for major section headers and key points:
+
+  - Use 📊 for Market Overview sections
+  - Use 🔗 for On-Chain Analysis sections
+  - Use 📈 for Technical Analysis sections
+  - Use ⚠️ for Risk Assessment sections
+  - Use 🎯 for Trading Recommendations sections
+  - Use 🔍 for Indicator Explanations sections
+  - Use 🌐 for Extended Market Analysis sections
+  - Use 📝 for Data Collection Methods sections
+  - Use ⬆️ for bullish indicators
+  - Use ⬇️ for bearish indicators
+  - Use ↔️ for neutral/sideways indicators
+  - Use 💰 for whale activity and large transactions
+  - Use 🔄 for exchange flows
+  - Use 🚀 for significant price movements
+  - Use 🏆 for outperforming metrics
+  - Use ⛏️ for mining-related metrics
+  - Use 📱 for social sentiment metrics
+
 - MUST analyze multiple time frames:
 
   - Primary: 4H and 1D charts
   - Secondary: 15min, 1H, 1W (for context)
   - Long-term: 1M (for macro view)
 
-- MUST fetch real-time market data using public APIs in this priority order:
+- MUST fetch real-time market data using these specific API endpoints:
 
-  1. Binance API (price & trading data)
-  2. CoinGecko API (market data)
-  3. CryptoCompare API (aggregated data)
-  4. Glassnode API (on-chain metrics)
-  5. Nansen API (DeFi metrics)
+  1. Binance API:
 
-- REQUIRED on-chain indicators:
+     - Price data: `https://api.binance.com/api/v3/ticker/price?symbol={SYMBOL}`
+     - Klines/Candlesticks: `https://api.binance.com/api/v3/klines?symbol={SYMBOL}&interval={INTERVAL}&limit={LIMIT}`
+     - 24h Statistics: `https://api.binance.com/api/v3/ticker/24hr?symbol={SYMBOL}`
+     - Order Book: `https://api.binance.com/api/v3/depth?symbol={SYMBOL}&limit={LIMIT}`
+
+  2. CoinGecko API:
+
+     - Price/Market Data: `https://api.coingecko.com/api/v3/coins/{ID}?localization=false&tickers=true&market_data=true&community_data=true&developer_data=false`
+     - Historical Data: `https://api.coingecko.com/api/v3/coins/{ID}/market_chart?vs_currency={CURRENCY}&days={DAYS}`
+     - Global Market: `https://api.coingecko.com/api/v3/global`
+
+  3. CryptoCompare API:
+
+     - Current Data: `https://min-api.cryptocompare.com/data/pricemultifull?fsyms={SYMBOL}&tsyms={CURRENCY}`
+     - Historical OHLCV: `https://min-api.cryptocompare.com/data/v2/histoday?fsym={SYMBOL}&tsym={CURRENCY}&limit={LIMIT}`
+     - Exchange Volume: `https://min-api.cryptocompare.com/data/exchange/histoday?tsym={CURRENCY}&limit={LIMIT}`
+
+  4. Glassnode API (requires API key):
+
+     - Active Addresses: `https://api.glassnode.com/v1/metrics/addresses/active_count?a={ASSET}&i={INTERVAL}`
+     - SOPR: `https://api.glassnode.com/v1/metrics/indicators/sopr?a={ASSET}&i={INTERVAL}`
+     - Exchange Flows: `https://api.glassnode.com/v1/metrics/transactions/transfers_volume_exchanges_net?a={ASSET}&i={INTERVAL}`
+
+  5. Alternative Data Collection Methods:
+     - Fear & Greed Index: `https://api.alternative.me/fng/`
+     - Social Sentiment: Use Twitter API with keyword filters
+     - News Sentiment: NewsAPI with crypto keywords
+
+- REQUIRED on-chain indicators with calculation formulas:
 
   1. Network Health:
-     - Active Addresses (24h)
-     - New Addresses Growth
-     - Transaction Count
-     - Network Hash Rate
-  2. HODL Metrics:
-     - HODL Waves
-     - Average Coin Age
-     - Supply Last Active
-     - Realized HODL Ratio
-  3. Whale Activity:
-     - Large Transaction Volume
-     - Whale Transaction Count (>$100k)
-     - Exchange Inflow/Outflow
-     - Whale Wallet Changes
-  4. Mining Metrics:
-     - Miner Revenue
-     - Miner Position Change
-     - Hash Ribbon
-     - Puell Multiple
-  5. DeFi Metrics (if applicable):
-     - Total Value Locked (TVL)
-     - Protocol Revenue
-     - Unique Users
-     - Volume/TVL Ratio
 
-- REQUIRED technical indicators for each time frame:
+     - Active Addresses (24h): `Count of unique addresses that were active as sender or receiver`
+     - New Addresses Growth: `(Today's New Addresses - Yesterday's New Addresses) / Yesterday's New Addresses * 100%`
+     - Transaction Count: `Sum of all transactions in the selected time period`
+     - Network Hash Rate: `Difficulty * 2^32 / Block Time (seconds)`
+
+  2. HODL Metrics:
+
+     - HODL Waves: `Percentage distribution of circulating supply by age bands (1d, 1w, 1m, 3m, 6m, 1y, 2y, 3y, 5y, 7y, 10y+)`
+     - Average Coin Age: `Sum(UTXO Values * Time Since Last Movement) / Total Circulating Supply`
+     - Supply Last Active: `Supply breakdown by last activity time`
+     - Realized HODL Ratio: `Realized Cap / Market Cap`
+       Formula: `∑(UTXOs * price when last moved) / (Current Price * Circulating Supply)`
+
+  3. Whale Activity:
+
+     - Large Transaction Volume: `Sum of all transaction values > $100,000 in 24h`
+     - Whale Transaction Count: `Count of transactions > $100,000 in 24h`
+     - Exchange Inflow/Outflow: `Sum of all deposits to exchanges - Sum of all withdrawals from exchanges in 24h`
+     - Whale Wallet Changes: `Changes in holdings of the top 100 non-exchange wallets in 24h`
+
+  4. Mining Metrics:
+
+     - Miner Revenue: `Block Rewards + Transaction Fees`
+     - Miner Position Change: `Net change in miner wallet balances over 24h`
+     - Hash Ribbon: `30d MA of Hash Rate crosses above 60d MA (bullish) or below (bearish)`
+       Formula: `Crossover of Hash Rate's MA(30) and MA(60)`
+     - Puell Multiple: `Daily coin issuance (USD) / 365-day MA of daily coin issuance (USD)`
+       Formula: `(Daily Mining Revenue in USD) / (365-day Moving Average of Daily Mining Revenue in USD)`
+
+  5. DeFi Metrics (if applicable):
+     - Total Value Locked (TVL): `Sum of all assets locked in protocol contracts (USD)`
+     - Protocol Revenue: `Sum of all fees generated by protocol in 24h`
+     - Unique Users: `Count of unique addresses interacting with protocol in 24h`
+     - Volume/TVL Ratio: `24h Trading Volume / TVL`
+       Formula: `Daily Trading Volume / Total Value Locked`
+
+- REQUIRED technical indicators with exact calculation methods:
 
   1. Trend Indicators:
+
      - Moving Averages (MA): 7/25/99 periods
+       SMA Formula: `SMA(n) = (P₁ + P₂ + ... + Pₙ) / n`
+       EMA Formula: `EMA = Price * (2 / (n+1)) + EMA_previous * (1 - (2 / (n+1)))`
      - MACD (12,26,9)
+       Formula: `MACD Line = EMA(12) - EMA(26)`
+       Signal Line: `EMA(9) of MACD Line`
+       Histogram: `MACD Line - Signal Line`
      - Directional Movement Index (DMI)
+       +DI Formula: `100 * EMA(14) of +DM / ATR(14)`rescanCheck
+       -DI Formula: `100 * EMA(14) of -DM / ATR(14)`
+       ADX Formula: `100 * EMA(14) of |+DI - -DI| / (+DI + -DI)`
      - Ichimoku Cloud (9,26,52,26)
+       Tenkan-sen: `(9-period high + 9-period low) / 2`
+       Kijun-sen: `(26-period high + 26-period low) / 2`
+       Senkou Span A: `(Tenkan-sen + Kijun-sen) / 2` (plotted 26 periods ahead)
+       Senkou Span B: `(52-period high + 52-period low) / 2` (plotted 26 periods ahead)
+       Chikou Span: `Close price` (plotted 26 periods behind)
+
   2. Momentum Indicators:
+
      - Relative Strength Index (RSI-14)
+       Formula: `RSI = 100 - (100 / (1 + RS))`
+       where `RS = Average Gain / Average Loss` over 14 periods
      - Stochastic Oscillator (14,3,3)
+       %K Formula: `100 * (C - L14) / (H14 - L14)`
+       where C = current close, L14 = lowest low 14 periods, H14 = highest high 14 periods
+       %D Formula: `3-period SMA of %K`
      - Money Flow Index (MFI-14)
+       Money Flow: `Typical Price * Volume`
+       Positive Money Flow: Sum of Money Flow when Typical Price rises
+       Negative Money Flow: Sum of Money Flow when Typical Price falls
+       Money Ratio: `Positive Money Flow / Negative Money Flow`
+       MFI Formula: `100 - (100 / (1 + Money Ratio))`
      - Williams %R (14)
+       Formula: `%R = (Highest High(14) - Close) / (Highest High(14) - Lowest Low(14)) * -100`
+
   3. Volatility Indicators:
+
      - Bollinger Bands (20,2)
+       Middle Band: `20-period SMA`
+       Upper Band: `Middle Band + (20-period Standard Deviation * 2)`
+       Lower Band: `Middle Band - (20-period Standard Deviation * 2)`
+       Bandwidth: `(Upper Band - Lower Band) / Middle Band`
      - Average True Range (ATR-14)
+       True Range: `max(high - low, |high - previous close|, |low - previous close|)`
+       ATR Formula: `EMA(14) of True Range`
      - Keltner Channels
+       Middle Line: `20-period EMA`
+       Upper Channel: `Middle Line + (ATR(10) * 2)`
+       Lower Channel: `Middle Line - (ATR(10) * 2)`
+
   4. Volume Indicators:
      - On-Balance Volume (OBV)
+       If Close > Previous Close: `OBV = Previous OBV + Current Volume`
+       If Close < Previous Close: `OBV = Previous OBV - Current Volume`
+       If Close = Previous Close: `OBV = Previous OBV`
      - Volume RSI
+       Apply RSI formula to volume instead of price
      - Chaikin Money Flow (CMF-20)
+       Money Flow Multiplier: `((Close - Low) - (High - Close)) / (High - Low)`
+       Money Flow Volume: `Money Flow Multiplier * Volume`
+       CMF Formula: `Sum of Money Flow Volume over 20 periods / Sum of Volume over 20 periods`
      - Accumulation/Distribution Line
+       Money Flow Volume: `((Close - Low) - (High - Close)) / (High - Low) * Volume`
+       A/D Line: Previous A/D Line + Current Money Flow Volume
 
 - MUST include for each indicator:
 
   - Current value
-  - Signal interpretation
-  - Calculation formula
+  - Signal interpretation (with specific thresholds):
+    - RSI: Overbought > 70, Oversold < 30
+    - Stochastic: Overbought > 80, Oversold < 20
+    - MACD: Bullish when MACD line crosses above Signal line
+    - Bollinger Bands: Potential reversal when price touches bands
+  - Calculation formula (as shown above)
   - Historical context (at least 3 previous periods)
-  - Divergence analysis with price
-  - Time frame correlation analysis
+  - Divergence analysis with price:
+    - Regular Divergence: Price makes higher high but indicator makes lower high (bearish)
+    - Hidden Divergence: Price makes lower high but indicator makes higher high (bullish)
+  - Time frame correlation analysis: Compare indicator values across multiple timeframes
 
-- REQUIRED additional analysis dimensions:
+- REQUIRED data visualization techniques:
+
+  1. Price Charts:
+
+     - Candlestick charts with volume
+     - Multiple timeframe views (4H, 1D primary)
+     - Support/resistance levels clearly marked
+     - Trendlines and chart patterns identified
+
+  2. Indicator Charts:
+
+     - RSI with 70/30 levels marked
+     - MACD with histogram and signal crossovers highlighted
+     - Volume profile on the right side of the chart
+     - ATR for volatility measurement
+
+  3. On-Chain Visualizations:
+     - Network metrics as line charts with 30/90-day MA
+     - HODL waves as area charts with color-coded time bands
+     - Heat maps for whale transaction activity
+     - Exchange flow bar charts (inflow/outflow)
+
+- REQUIRED explicit trading signals and price targets:
+
+  1. Trading Decision:
+
+     - MUST clearly state either "BUY", "SELL", or "HOLD" as the primary recommendation
+     - Include confidence level: High (>80%), Medium (50-80%), Low (<50%)
+     - Specify time frame for the recommendation: Immediate, Short-term (1-7 days), Medium-term (1-4 weeks), Long-term (1-6 months)
+     - Provide specific reasoning with at least 3 supporting indicators or metrics
+     - Risk assessment score: 1-10 scale (1 = extremely low risk, 10 = extremely high risk)
+
+  2. Entry Price Targets:
+
+     - Primary entry price: Specific price level with highest probability
+     - Entry range: Lower and upper bounds for scaling in positions
+     - Best entry conditions: Market conditions that would trigger entry (e.g., "Enter after RSI crosses below 30")
+     - Entry timeframe: Maximum waiting period before reconsidering analysis
+     - Entry confidence: Percentage certainty based on indicator alignment
+
+  3. Exit Price Targets:
+
+     - Take profit levels: Multiple targets with percentages of position size
+       - TP1: Price + % of position
+       - TP2: Price + % of position
+       - TP3: Price + % of position
+     - Stop loss level: Specific price with clear reasoning
+     - Trailing stop parameters (if applicable)
+     - Maximum holding period recommendation
+     - Exit conditions: Specific indicators or conditions that would trigger exit regardless of price
+
+  4. Position Sizing:
+     - Recommended position size as percentage of portfolio
+     - Scaling strategy: Percentages for initial and additional entries
+     - Max allocation recommended for this opportunity
+     - Position size justification based on volatility and risk metrics
+
+- REQUIRED indicator interpretation guide that explains:
+
+  1. For each technical indicator:
+
+     - Plain language explanation of what the indicator currently shows
+     - Historical performance of this indicator in similar conditions
+     - Current reading in context (unusually high/low/neutral)
+     - Most relevant timeframe for this indicator in current market
+     - Indicator reliability score for this specific asset (1-10 scale)
+
+  2. For each on-chain metric:
+     - Plain language explanation of what the metric indicates about market conditions
+     - Current reading compared to historical ranges (percentile ranking)
+     - Known limitations of this metric in current conditions
+     - Leading/lagging nature of the indicator and typical signal delay
+     - Counter-indicators that might contradict this metric (if any)
+
+- REQUIRED additional analysis dimensions with data sources and calculations:
 
   1. Market Sentiment Metrics:
 
-     - Fear & Greed Index
+     - Fear & Greed Index: Use Alternative.me API
+       Interpretation scale: 0-25 (Extreme Fear), 26-45 (Fear), 46-55 (Neutral), 56-75 (Greed), 76-100 (Extreme Greed)
      - Social Media Metrics:
-       - Twitter/X Mentions
-       - Reddit Activity
-       - Telegram Group Growth
-       - Discord Activity
-     - Google Trends Data
-     - News Sentiment Analysis
-     - Funding Rate Analysis
-     - Long/Short Ratio
-     - Options Put/Call Ratio
-
-  2. Derivatives Market Analysis:
-
-     - Open Interest Analysis
-     - Funding Rates Across Exchanges
-     - Futures Basis
-     - Options Market:
-       - Implied Volatility Skew
-       - Maximum Pain Point
-       - Options Volume Profile
-       - Delta Neutral Levels
-     - Liquidation Levels:
-       - Long Liquidation Walls
-       - Short Liquidation Points
-     - Aggregated CVD (Cumulative Volume Delta)
-
-  3. Cross-Chain & Inter-Market Analysis:
-
-     - Cross-chain Volume Flows
-     - Bridge Activity Monitoring
-     - CEX vs DEX Volume Comparison
-     - Stablecoin Flows:
-       - USDT Dominance
-       - USDC Supply Changes
-       - Stablecoin Velocity
-     - Layer 2 Activity:
-       - L2 TVL Changes
-       - Cross-L2 Bridges Volume
-       - L2 User Growth
-     - Correlation Analysis:
-       - DXY Correlation
-       - SPX Correlation
-       - Gold/BTC Correlation
-       - Inter-crypto Correlations
-
-  4. Market Microstructure:
-
-     - Order Book Analysis:
-       - Depth Analysis
-       - Bid-Ask Spread
-       - Order Book Imbalance
-     - Market Impact Analysis:
-       - Slippage Metrics
-       - Liquidity Scores
-     - Volume Profile Analysis:
-       - VPVR (Volume Profile Visible Range)
-       - POC (Point of Control)
-       - Value Area Analysis
-     - Market Efficiency:
-       - Price-Volume Relationship
-       - Market Efficiency Ratio
-       - Arbitrage Opportunities
-
-  5. Regulatory & Macro Environment:
-
-     - Regulatory News Impact
-     - Institutional Flows:
-       - GBTC Premium/Discount
-       - ETF Flows
-       - CME Futures Volume
-     - Macro Indicators:
-       - Interest Rate Impact
-       - Inflation Data Correlation
-       - Currency Market Impact
-     - Geographic Distribution:
-       - Trading Volume by Region
-       - Regulatory Risk by Region
-       - Mining Distribution
-
-  6. Smart Money Analysis:
-     - Wallet Profiling:
-       - Smart Money Flow Index
-       - Early Adopter Wallet Activity
-       - VC/Institution Wallet Tracking
-     - DeFi Smart Money:
-       - Yield Farming Trends
-       - Protocol Revenue Analysis
-       - TVL Distribution
-     - NFT Market Correlation:
-       - Blue Chip NFT Floor Prices
-       - NFT Market Volume
-       - Wash Trading Analysis
+       - Twitter/X Mentions: Count of cryptocurrency mentions, Rate of change
+         Measure: `(Current Mention Count - Previous Period Count) / Previous Period Count * 100%`
+       - Reddit Activity: Subscriber growth, Daily active users, Post sentiment
+         Formula: `Weighted score of (Positive Comments - Negative Comments) / Total Comments`
+       - Telegram/Discord Activity: Member growth rate, Message volume
+     - Google Trends Data: Relative search interest (0-100 scale)
+       Compare to historical price correlation
+     - News Sentiment Analysis: Aggregate positive vs. negative headlines
+       Score: `-1 (Very Negative) to +1 (Very Positive)`
+     - Funding Rate Analysis: Average across major exchanges
+       Formula: `(Sum of All Exchange Funding Rates) / Number of Exchanges`
+     - Long/Short Ratio: From exchange API data
+       Formula: `Total Long Positions / Total Short Positions`
+     - Options Put/Call Ratio: Volume or open interest based
+       Formula: `Put Option Volume (or OI) / Call Option Volume (or OI)`
 
 - Analysis structure MUST contain:
 
@@ -200,12 +309,12 @@ alwaysApply: false
   #### Holder Behavior
 
   - HODL Wave Analysis
-  - Whale Activity
-  - Exchange Flows
+  - Whale Activity 💰
+  - Exchange Flows 🔄
 
   #### Mining/Staking Metrics
 
-  - Hash Rate/Staking Rate
+  - Hash Rate/Staking Rate ⛏️
   - Miner/Validator Behavior
   - Network Security Metrics
 
@@ -240,18 +349,64 @@ alwaysApply: false
   - Market Structure Risks
   - Correlation Risks
 
-  ### 🎯 Trading Zones
+  ### 🎯 Trading Recommendation & Price Targets
 
-  - Entry Points (4H & 1D)
-  - Stop Loss Levels
-  - Take Profit Targets
+  #### Primary Recommendation
+
+  - Action: BUY/SELL/HOLD
+  - Confidence Level: High/Medium/Low (XX%)
+  - Timeframe: Immediate/Short/Medium/Long-term
+  - Risk Assessment: X/10
+
+  #### Entry Strategy
+
+  - Primary Entry: $XX,XXX
+  - Entry Range: $XX,XXX - $XX,XXX
+  - Best Entry Conditions: [Specific market conditions]
+  - Maximum Wait Time: X days/hours
+  - Entry Confidence: XX%
+
+  #### Exit Strategy
+
+  - Take Profit Targets:
+    - TP1: $XX,XXX (XX% of position)
+    - TP2: $XX,XXX (XX% of position)
+    - TP3: $XX,XXX (XX% of position)
+  - Stop Loss: $XX,XXX (X% below entry)
+  - Trailing Stop: XX% after reaching TP1
+  - Maximum Hold Period: X days/weeks
+  - Exit Triggers: [Specific conditions]
+
+  #### Position Management
+
+  - Recommended Size: XX% of portfolio
+  - Initial Position: XX% of allocation
+  - Scaling Strategy: XX% at [condition], XX% at [condition]
+  - Maximum Allocation: XX% of portfolio
+  - Risk/Reward Ratio: X:X
+
+  ### 🔍 Indicator Explanations
+
+  #### Technical Indicators
+
+  - RSI: [Plain language explanation + context + reliability]
+  - MACD: [Plain language explanation + context + reliability]
+  - Bollinger Bands: [Plain language explanation + context + reliability]
+  - [Other indicators used in analysis]
+
+  #### On-Chain Metrics
+
+  - Active Addresses: [Plain language explanation + context + reliability]
+  - Exchange Flows: [Plain language explanation + context + reliability]
+  - HODL Waves: [Plain language explanation + context + reliability]
+  - [Other metrics used in analysis]
 
   ### 🌐 Extended Market Analysis
 
   #### Sentiment Analysis
 
   - Fear & Greed Index Interpretation
-  - Social Media Metrics Analysis
+  - Social Media Metrics Analysis 📱
   - News Sentiment Impact
 
   #### Derivatives Market Status
@@ -280,9 +435,16 @@ alwaysApply: false
 
   #### Smart Money Tracking
 
-  - Whale Wallet Analysis
+  - Whale Wallet Analysis 💰
   - DeFi Smart Money Flows
   - NFT Market Correlation
+
+  ### 📝 Data Collection Methods
+
+  - APIs and endpoints used
+  - Data refresh frequency
+  - Calculation methodology notes
+  - Data reliability assessment
   ```
 
 ## Examples
@@ -293,32 +455,66 @@ alwaysApply: false
 #### Market Sentiment
 
 - Fear & Greed Index: 65 (Greed)
+  Source: alternative.me/crypto/fear-and-greed-index/
+  Previous values: 62 (24h), 55 (7d), 45 (30d)
 - Social Sentiment: Positive (24h change: +15%)
+  Data collection: Twitter API (10,000 tweets with #BTC, #Bitcoin)
+  Sentiment calculation: (Positive - Negative) / Total = 0.32
 - Funding Rate (Binance): 0.01% (Neutral)
+  Source: binance.com/futures/funding-rate/BTC
+  Historical: 0.01% (8h), 0.02% (16h), 0.01% (24h)
 - Options Put/Call Ratio: 0.75 (Bullish)
+  Source: Deribit API
+  Formula: Put Volume / Call Volume = 12,450 / 16,600
 
 #### Derivatives Overview
 
 - Open Interest: $12.5B (↑8% 24h)
+  Breakdown: Binance $4.2B, Bybit $3.1B, OKX $2.8B, Others $2.4B
+  Historical: $11.5B (24h), $10.8B (48h), $10.2B (72h)
 - Aggregate Funding Rate: 0.012% (Slightly Bullish)
+  Calculation: (Sum of rates from 5 major exchanges) / 5
 - Max Pain Point: $92,000
+  Calculation: Strike price where option writers have minimum loss
+  Data Source: Deribit options chain API
 - IV Skew: Right-skewed (Calls Premium)
+  25-delta put IV: 65%
+  25-delta call IV: 72%
+  Ratio: 0.90 (< 1 indicates call premium)
 
 #### Cross-Chain Analysis
 
 - Bridge Flows: Net Positive ($245M 24h)
+  Data collection: Bridgescan API aggregate
+  Top bridges: Wormhole ($82M), Multichain ($76M), Stargate ($58M)
+  7-day trend: Consistently positive, increasing +12% per day
 - Stablecoin Movement: USDT Inflow ($890M 24h)
+  Source: Whale Alert API + Etherscan API
+  USDT Dominance: 67.3% of total stablecoin market cap
+  USDC Change: -$120M (24h)
 - L2 TVL Change: +5.2% (24h)
+  Source: DefiLlama API
+  Breakdown: Arbitrum +6.8%, Optimism +4.5%, zkSync +3.2%
 
 #### On-Chain Metrics (24h)
 
 - Active Addresses: 1.2M (↑5.2%)
+  Source: Glassnode API endpoint: addresses/active_count
+  Calculation: Count of unique addresses that sent or received BTC
+  Historical: 1.14M (48h), 1.08M (72h), 1.05M (7d avg)
 - New Addresses: 460K (↑3.1%)
+  Source: Glassnode API endpoint: addresses/new_non_zero_count
+  Calculation: Addresses receiving BTC for the first time
+  7-day trend: Consistently increasing, avg +2.8% daily
 - Exchange Outflow: 22,450 BTC
+  Exchange Inflow: 18,320 BTC
+  Net Flow: -4,130 BTC (outflow)
+  Source: Glassnode API endpoint: transactions/transfers_volume_exchanges_net
 - Realized HODL Ratio: 1.85
-- Calculation:
-  Active Address Growth = (Today's Active - Yesterday's Active) / Yesterday's Active
-  RHODL = Realized_Cap(USD) / Market_Cap(USD)
+  Calculation:
+  Active Address Growth = (1.2M - 1.14M) / 1.14M = 5.2%
+  RHODL = Realized_Cap($705B) / Market_Cap($1.3T) = 0.54
+  Historical: 1.78 (7d), 1.65 (30d), 1.45 (90d)
 
 #### Technical Analysis (4H)
 
@@ -328,26 +524,113 @@ alwaysApply: false
   - MA25: 88,200 (↑)
   - MA99: 85,600 (→)
   - Status: Bullish (MA7 > MA25 > MA99)
+  - Formula: SMA7 = (P1 + P2 + ... + P7) / 7
+  - Historical: All MAs trending upward for 48h
+  - Cross Analysis: MA7 crossed MA25 upward 36h ago (bullish)
 
 - MACD (12,26,9):
+
   - MACD Line: 2.45
   - Signal Line: 1.98
-  - Histogram: 0.47
+  - Histogram: 0.47 (expanding)
   - Calculation:
-    MACD Line = EMA(12) - EMA(26)
-    Signal Line = EMA(9) of MACD Line
+    MACD Line = EMA(12) - EMA(26) = 92,780 - 90,330 = 2,450
+    Signal Line = EMA(9) of MACD Line = 1,980
+  - Cross Analysis: MACD crossed Signal upward 28h ago (bullish)
+  - Divergence: None (price high aligned with MACD high)
 
-[Additional indicators following the same detailed format...]
+- RSI (14):
 
-### 🎯 Trading Zones (4H Frame)
+  - Current: 68.5
+  - Previous values: 65.2 (4h), 61.7 (8h), 57.8 (12h)
+  - Formula: RSI = 100 - [100 / (1 + (Avg Gain / Avg Loss))]
+  - RS calculation:
+    Average 14-period Gain = 1,240
+    Average 14-period Loss = 580
+    RS = 1,240 / 580 = 2.14
+    RSI = 100 - [100 / (1 + 2.14)] = 68.5
+  - Interpretation: Approaching overbought (70), but not yet extreme
+  - Divergence: None (RSI confirms price action)
 
-Entry Zones: 92,800 - 93,200
+- Bollinger Bands (20,2):
+  - Middle Band (SMA20): 90,200
+  - Upper Band: 94,600
+  - Lower Band: 85,800
+  - Bandwidth: 0.097 (expanding)
+  - Formula:
+    Standard Deviation of SMA20 = 2,200
+    Upper Band = 90,200 + (2,200 _ 2) = 94,600
+    Lower Band = 90,200 - (2,200 _ 2) = 85,800
+  - Price Position: Near upper band (93,200)
+  - Interpretation: Strong uptrend with expanding volatility
 
-- Order Book Support: Heavy bids at 92,500
-- Volume Profile POC: 92,850
-- Options Market Support: 92,000 (Max Pain)
-  Stop Loss: 91,800 (Below 4H structure)
-  Take Profit: 95,800 (1.618 Fib + OI resistance)
+### 🎯 Trading Recommendation & Price Targets
+
+#### Primary Recommendation
+
+- Action: BUY
+- Confidence Level: Medium (65%)
+- Timeframe: Short-term (3-5 days)
+- Risk Assessment: 6/10
+- Supporting Indicators:
+  1. Bullish MACD cross (28h ago) with expanding histogram
+  2. RSI showing upward momentum at 68.5 (approaching but not overbought)
+  3. Price consolidating near upper Bollinger Band with expanding bandwidth
+  4. Net exchange outflows (-4,130 BTC) indicating accumulation
+
+#### Entry Strategy
+
+- Primary Entry: $92,400
+- Entry Range: $91,800 - $93,000
+- Best Entry Conditions: After 4H RSI drops below 60 while price maintains above $91,800 support
+- Maximum Wait Time: 48 hours
+- Entry Confidence: 70%
+
+#### Exit Strategy
+
+- Take Profit Targets:
+  - TP1: $94,500 (30% of position) - 0.618 Fib retracement level
+  - TP2: $96,200 (40% of position) - Previous resistance zone
+  - TP3: $98,500 (30% of position) - 1.618 Fib extension
+- Stop Loss: $91,300 (1.2% below entry) - Below key support and 4H MA25
+- Trailing Stop: 2% after reaching TP1
+- Maximum Hold Period: 7 days
+- Exit Triggers: 4H RSI above 75 or daily MACD cross below signal line
+
+#### Position Management
+
+- Recommended Size: 5% of portfolio
+- Initial Position: 60% of allocation (3% of portfolio)
+- Scaling Strategy: Add 20% at $92,000, final 20% at $91,800
+- Maximum Allocation: 8% of portfolio if strong momentum develops
+- Risk/Reward Ratio: 1:3.2
+
+### 🔍 Indicator Explanations
+
+#### Technical Indicators
+
+- RSI (68.5): The Relative Strength Index is showing strong but not yet overextended momentum. Current reading is in the upper bullish range but not yet overbought, suggesting continued upward potential. This indicator has been 80% reliable for BTC at this timeframe over the past 3 months. Most effective on 4H chart currently.
+
+- MACD (2.45, 1.98, 0.47): The Moving Average Convergence Divergence shows bullish momentum is increasing (widening histogram). The recent cross above the signal line (28h ago) has continued to develop positively, which historically leads to 4-6 days of uptrend. This signal has 75% reliability on BTC in current market structure.
+
+- Bollinger Bands (expanding): Price is near the upper band but with expanding band width, indicating a strong trend rather than an imminent reversal. This pattern has preceded further upside 70% of the time in similar market conditions. Upper band at $94,600 creates next resistance level.
+
+#### On-Chain Metrics
+
+- Active Addresses (1.2M, ↑5.2%): Network activity is showing healthy growth without overheating. Current level ranks in the 65th percentile of 2025 readings, indicating strong user engagement without speculative excess. This metric serves as a leading indicator that typically precedes price movements by 2-3 days.
+
+- Exchange Flows (Net outflow -4,130 BTC): Investors are moving Bitcoin off exchanges, typically a bullish sign indicating long-term holding intention rather than selling pressure. Current outflows are significant but not extreme (70th percentile of yearly readings). This indicator has been 85% accurate in predicting 1-week price direction.
+
+- HODL Waves (1-3 month cohort increasing): The growing 1-3 month holder group suggests recent buyers are maintaining their positions. This pattern historically precedes continuation of bullish trends in 75% of cases. Current readings show no distribution from long-term holders, reducing sell pressure risk.
+
+### 📝 Data Collection Methods
+
+- Price data: Binance API, 3-minute refresh
+- On-chain metrics: Glassnode API, 1-hour refresh
+- Order book: Binance Depth API, 15-second refresh
+- Sentiment data: Alternative.me API + Twitter API, 6-hour refresh
+- Calculation engine: Custom Python scripts with pandas and numpy
+- Data reliability: High (99.7% uptime, cross-validated across 3 sources)
   </example>
 
 <example type="invalid">
@@ -365,4 +648,13 @@ Problems:
 - Incomplete order book analysis
 - No smart money tracking
 - Missing macro context
+- No data sources specified
+- No calculation methods provided
+- Missing time frame specifications
+- No historical comparisons
+- No risk assessment
+- No explicit buy/sell recommendation
+- Missing specific entry and exit prices
+- No indicator explanations in plain language
+- No position sizing recommendations
   </example>

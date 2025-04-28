@@ -1,0 +1,527 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Crypto Token Technical Analysis Rule
+
+## Critical Rules
+
+- MUST fetch and use real-time market data for all analyses with no fabrication of unavailable data
+- MUST clearly mark any missing indicators with ❓ symbol and explain why the data is unavailable
+- MUST output analysis as plain text (.txt) file in the docs folder with filename format: `crypto-analysis-[TOKEN]-[YYYY-MM-DD].txt`
+- MUST include appropriate emojis for section headers and key points as specified below
+- MUST timestamp all analyses with data retrieval time in UTC
+- MUST analyze multiple timeframes for comprehensive perspective
+- MUST provide explicit trading signals with confidence levels
+- MUST calculate specific entry/exit price targets and risk parameters
+
+## Required Emojis for Sections and Indicators
+
+- 📊 Market Overview sections
+- 📈 Technical Analysis sections
+- 🔗 On-Chain Analysis sections
+- 📱 Market Sentiment sections
+- ⚠️ Risk Assessment sections
+- 🎯 Trading Recommendations sections
+- 📝 Data Collection Methods sections
+- ⏱️ Timeframe Analysis sections
+- ⬆️ Bullish indicators
+- ⬇️ Bearish indicators
+- ↔️ Neutral/sideways indicators
+- 📉 Downtrend patterns
+- 📈 Uptrend patterns
+- 🔄 Consolidation patterns
+- 💰 Whale activity and large transactions
+- 🔍 Volume analysis indicators
+- 🚀 Significant price movements
+- ❓ Missing data indicators
+- ⚡ Important signal alerts
+- 🛑 Stop-loss levels
+- 🏁 Take-profit targets
+- 🧮 Calculation methodologies
+- 🔮 Prediction confidence levels
+
+## Required Analysis Timeframes
+
+- **Short-term**: 15m, 1h, 4h charts
+- **Medium-term**: 1D, 3D charts
+- **Long-term**: 1W, 1M charts
+- Must provide correlation analysis between timeframes
+
+## Required Real-Time Data Sources
+
+1. **Price and Market Data APIs**:
+
+   - Binance API: `https://api.binance.com/api/v3/ticker/price?symbol={SYMBOL}`
+   - CoinGecko API: `https://api.coingecko.com/api/v3/coins/{ID}`
+   - CoinMarketCap API: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest`
+   - FTX API: `https://ftx.com/api/markets/{MARKET}`
+   - Kraken API: `https://api.kraken.com/0/public/Ticker?pair={PAIR}`
+
+2. **On-Chain Data APIs**:
+
+   - Etherscan API: `https://api.etherscan.io/api?module=account&action=balance&address={ADDRESS}`
+   - Glassnode API: `https://api.glassnode.com/v1/metrics/indicators/sopr`
+   - IntoTheBlock API: `https://api.intotheblock.com/v1/signals/{COIN}`
+   - Santiment API: `https://api.santiment.net/graphql`
+   - CryptoQuant API: `https://api.cryptoquant.com/v1/btc/network-data`
+
+3. **Market Sentiment APIs**:
+
+   - Alternative.me Fear & Greed Index: `https://api.alternative.me/fng/`
+   - LunarCrush API: `https://lunarcrush.com/api/v2`
+   - The TIE API: `https://api.thetie.io/`
+   - Santiment Social Data: `https://api.santiment.net/graphql` (social volume query)
+   - CoinGecko Trending: `https://api.coingecko.com/api/v3/search/trending`
+
+4. **Exchange Data APIs**:
+   - Binance Futures API: `https://fapi.binance.com/fapi/v1/premiumIndex`
+   - BitMEX API: `https://www.bitmex.com/api/v1/instrument`
+   - Deribit API: `https://www.deribit.com/api/v2/public/get_index`
+   - FTX Futures API: `https://ftx.com/api/futures`
+   - Bybit API: `https://api.bybit.com/v2/public/tickers`
+
+## Required Technical Analysis Indicators
+
+1. **Trend Indicators**:
+
+   - Moving Averages (MA): 7/25/50/99/200 periods
+     - SMA Formula: `SMA(n) = (P₁ + P₂ + ... + Pₙ) / n`
+     - EMA Formula: `EMA = Price * (2 / (n+1)) + EMA_previous * (1 - (2 / (n+1)))`
+   - Moving Average Convergence Divergence (MACD): (12,26,9)
+     - MACD Line: `EMA(12) - EMA(26)`
+     - Signal Line: `EMA(9) of MACD Line`
+     - Histogram: `MACD Line - Signal Line`
+   - Ichimoku Cloud: (9,26,52,26)
+     - Tenkan-sen: `(9-period high + 9-period low) / 2`
+     - Kijun-sen: `(26-period high + 26-period low) / 2`
+     - Senkou Span A: `(Tenkan-sen + Kijun-sen) / 2` (plotted 26 periods ahead)
+     - Senkou Span B: `(52-period high + 52-period low) / 2` (plotted 26 periods ahead)
+   - Parabolic SAR
+     - Formula: `SAR(i+1) = SAR(i) + α × (EP - SAR(i))`
+   - Directional Movement Index (DMI): (14)
+     - +DI: `100 * EMA(14) of +DM / ATR(14)`
+     - -DI: `100 * EMA(14) of -DM / ATR(14)`
+     - ADX: `100 * EMA(14) of |+DI - -DI| / (+DI + -DI)`
+
+2. **Momentum Indicators**:
+
+   - Relative Strength Index (RSI): (14)
+     - Formula: `RSI = 100 - (100 / (1 + RS))`
+     - where `RS = Average Gain / Average Loss` over 14 periods
+   - Stochastic Oscillator: (14,3,3)
+     - %K: `100 * (C - L14) / (H14 - L14)`
+     - %D: `3-period SMA of %K`
+   - Commodity Channel Index (CCI): (20)
+     - Formula: `(Typical Price - 20-period SMA of Typical Price) / (0.015 * Mean Deviation)`
+   - Rate of Change (ROC): (10)
+     - Formula: `((Current Close - Close 10 periods ago) / Close 10 periods ago) * 100`
+   - Williams %R: (14)
+     - Formula: `(Highest High(14) - Close) / (Highest High(14) - Lowest Low(14)) * -100`
+
+3. **Volatility Indicators**:
+
+   - Bollinger Bands: (20,2)
+     - Middle Band: `20-period SMA`
+     - Upper Band: `Middle Band + (20-period Standard Deviation * 2)`
+     - Lower Band: `Middle Band - (20-period Standard Deviation * 2)`
+   - Average True Range (ATR): (14)
+     - True Range: `max(high - low, |high - previous close|, |low - previous close|)`
+     - ATR: `14-period EMA of True Range`
+   - Keltner Channels: (20,2)
+     - Middle Line: `20-period EMA`
+     - Upper Channel: `Middle Line + (ATR(10) * 2)`
+     - Lower Channel: `Middle Line - (ATR(10) * 2)`
+   - Standard Deviation: (20)
+     - Formula: `√(∑(x - μ)² / n)`
+
+4. **Volume Indicators**:
+   - On-Balance Volume (OBV)
+     - If Close > Previous Close: `OBV = Previous OBV + Current Volume`
+     - If Close < Previous Close: `OBV = Previous OBV - Current Volume`
+   - Volume Weighted Average Price (VWAP)
+     - Formula: `∑(Price * Volume) / ∑Volume`
+   - Chaikin Money Flow (CMF): (20)
+     - Money Flow Multiplier: `((Close - Low) - (High - Close)) / (High - Low)`
+     - Money Flow Volume: `Money Flow Multiplier * Volume`
+     - CMF: `Sum of Money Flow Volume over 20 periods / Sum of Volume over 20 periods`
+   - Accumulation/Distribution Line
+     - Money Flow Volume: `((Close - Low) - (High - Close)) / (High - Low) * Volume`
+     - A/D Line: Previous A/D Line + Current Money Flow Volume
+   - Money Flow Index (MFI): (14)
+     - Typical Price: `(High + Low + Close) / 3`
+     - Raw Money Flow: `Typical Price * Volume`
+     - Money Flow Ratio: `Positive Money Flow / Negative Money Flow`
+     - MFI: `100 - (100 / (1 + Money Flow Ratio))`
+
+## Required Chart Patterns Analysis
+
+1. **Reversal Patterns**:
+
+   - Head and Shoulders (Regular & Inverse)
+     - Identification: Three peaks with the middle peak higher (regular) or lower (inverse)
+     - Target: `Price at neckline + (Head height - Neckline height)`
+   - Double Top/Bottom
+     - Identification: Two peaks/troughs at similar levels with a trough/peak between
+     - Target: `Breakout level + (Pattern height)`
+   - Triple Top/Bottom
+     - Similar to double patterns but with three peaks/troughs
+   - Rounding Bottom (Saucer)
+     - Gradual change from downtrend to uptrend forming a "U" shape
+   - V-Bottoms and V-Tops
+     - Sharp, sudden reversals with minimal consolidation
+
+2. **Continuation Patterns**:
+
+   - Flags and Pennants
+     - Short-term consolidation after a strong move
+     - Target: `Breakout level + (Flagpole height)`
+   - Triangles (Symmetrical, Ascending, Descending)
+     - Converging trendlines with different slopes
+     - Target: `Breakout level + (Width of triangle at its widest point)`
+   - Rectangles (Trading Ranges)
+     - Price bouncing between parallel support and resistance
+     - Target: `Breakout level + (Height of rectangle)`
+   - Cup and Handle
+     - "U" shaped pattern (cup) followed by a slight downward drift (handle)
+     - Target: `Breakout level + (Cup depth)`
+   - Wedges (Rising and Falling)
+     - Converging trendlines both pointing in the same direction
+     - Target: `Breakout level + (Wedge height at its widest point)`
+
+3. **Candlestick Patterns**:
+   - Doji
+     - Open and close at virtually the same level
+   - Hammer and Hanging Man
+     - Small body with long lower shadow and little/no upper shadow
+   - Engulfing Patterns (Bullish and Bearish)
+     - Current candle's body completely engulfs the previous candle's body
+   - Morning Star and Evening Star
+     - Three-candle pattern showing reversal
+   - Harami (Bullish and Bearish)
+     - Small body contained within the previous candle's body
+   - Shooting Star and Inverted Hammer
+     - Small body with long upper shadow and little/no lower shadow
+   - Three White Soldiers and Three Black Crows
+     - Three consecutive bullish/bearish candles with higher/lower closes
+
+## Required On-Chain Analysis Metrics
+
+1. **Network Activity**:
+
+   - Active Addresses (24h)
+     - Count of unique addresses active as sender or receiver
+   - New Addresses (24h)
+     - Count of first-time active addresses
+   - Transaction Count (24h)
+     - Total number of on-chain transactions
+   - Transaction Volume (24h)
+     - Total value transferred on-chain in USD
+   - Average Transaction Value
+     - Transaction Volume / Transaction Count
+
+2. **Exchange Flows**:
+
+   - Exchange Inflow (24h)
+     - Total value transferred to exchange addresses
+   - Exchange Outflow (24h)
+     - Total value transferred from exchange addresses
+   - Net Flow (24h)
+     - Outflow - Inflow
+   - Exchange Balance Change (24h)
+     - Percentage change in total exchange balances
+   - Exchange Balance vs Total Supply
+     - Percentage of circulating supply held on exchanges
+
+3. **Whale Activity**:
+
+   - Whale Transaction Count (>$100k)
+     - Number of transactions >$100,000 in 24h
+   - Whale Transaction Volume
+     - Total value of whale transactions in 24h
+   - Top Holder Balance Changes
+     - Net change in the top 100 non-exchange wallets
+   - Whale Accumulation Trend
+     - 7-day moving average of whale balance changes
+   - Large Transactions Ratio
+     - Percentage of volume from transactions >$100,000
+
+4. **Supply Distribution**:
+   - Supply Last Active (1d/7d/30d/90d/1y+)
+     - Breakdown of supply by last activity time
+   - Supply Distribution by Address Balance
+     - Holdings breakdown by wallet size categories
+   - Realized Cap
+     - Sum(UTXOs \* price when last moved)
+   - MVRV Ratio
+     - Market Cap / Realized Cap
+   - Realized Profit/Loss
+     - Net USD value of tokens moved at profit/loss
+
+## Required Market Sentiment Metrics
+
+1. **Social Metrics**:
+
+   - Social Volume
+     - Mentions count across major platforms
+   - Social Dominance
+     - Token mentions relative to all crypto mentions
+   - Social Sentiment
+     - Weighted average of positive vs negative mentions
+   - Weighted Social Sentiment
+     - Sentiment weighted by source credibility and engagement
+   - Social Growth
+     - Change in social volume over 7 days
+
+2. **Derivatives Metrics**:
+
+   - Funding Rate
+     - Current perpetual swap funding rate
+   - Open Interest
+     - Total value of outstanding derivative contracts
+   - Long vs Short Ratio
+     - Ratio of long to short positions
+   - Liquidation Levels
+     - Price levels with significant liquidation risk
+   - Options Put/Call Ratio
+     - Ratio of put to call options volume
+
+3. **Market Psychology**:
+   - Fear & Greed Index
+     - 0-100 score indicating market sentiment
+   - Historical Fear & Greed
+     - 7/30/90-day average Fear & Greed scores
+   - NUPL (Net Unrealized Profit/Loss)
+     - (Market Cap - Realized Cap) / Market Cap
+   - Leverage Ratio
+     - Open Interest / Market Cap
+   - Market Value to Realized Value Z-Score
+     - (Market Cap - Realized Cap) / Standard Deviation of (Market Cap - Realized Cap)
+
+## Required Risk Management Metrics
+
+1. **Position Sizing**:
+
+   - Recommended position size (% of portfolio)
+   - Risk per trade (% of account)
+   - Position size calculation:
+     - Formula: `Account size * Risk percentage / (Entry price - Stop loss price)`
+   - Scaling strategy (entry tranches)
+   - Maximum allocation recommendation
+
+2. **Stop Loss Placement**:
+
+   - Technical stop loss level based on:
+     - Recent swing lows/highs
+     - Key support/resistance levels
+     - ATR multiple from entry (e.g., 3 × ATR)
+   - Volatility-adjusted stop loss
+   - Time-based stop loss (exit after X periods)
+   - Logical stop loss level justified by invalidation point
+
+3. **Take Profit Targets**:
+
+   - Multiple targets with % of position to exit at each
+   - Technical justification for each target
+   - Time-based profit targets
+   - Risk-reward ratio for each target
+   - Trailing stop loss strategy
+
+4. **Risk Assessment**:
+   - Volatility comparison to baseline (e.g., Bitcoin)
+   - Market correlation assessment
+   - Liquidity risk assessment
+   - Risk score (1-10 scale)
+   - Maximum drawdown projection
+
+## Required Output Format
+
+```
+# 📊 TECHNICAL ANALYSIS: [TOKEN] ([SYMBOL])
+
+📅 Date: [YYYY-MM-DD]
+⏰ Time of Analysis: [HH:MM UTC]
+
+## 📊 MARKET OVERVIEW
+
+Current Price: $[PRICE]
+24h Change: [PERCENTAGE]% [⬆️/⬇️/↔️]
+Market Cap: $[MARKET_CAP]
+24h Volume: $[VOLUME]
+Rank by Market Cap: #[RANK]
+
+## ⏱️ MULTI-TIMEFRAME ANALYSIS
+
+### 📈 SHORT-TERM (15m, 1h, 4h)
+[Analysis of short-term trends, indicators, and signals]
+
+### 📈 MEDIUM-TERM (1D, 3D)
+[Analysis of medium-term trends, indicators, and signals]
+
+### 📈 LONG-TERM (1W, 1M)
+[Analysis of long-term trends, indicators, and signals]
+
+## 📈 TECHNICAL INDICATORS
+
+### 🔍 TREND INDICATORS
+- Moving Averages (SMA/EMA): [VALUES & SIGNALS]
+- MACD (12,26,9): [VALUES & SIGNALS]
+- ADX (14): [VALUES & SIGNALS]
+- Ichimoku Cloud: [VALUES & SIGNALS]
+- Parabolic SAR: [VALUES & SIGNALS]
+
+### 🔍 MOMENTUM INDICATORS
+- RSI (14): [VALUE] [INTERPRETATION]
+- Stochastic Oscillator (14,3,3): [VALUE] [INTERPRETATION]
+- CCI (20): [VALUE] [INTERPRETATION]
+- Williams %R (14): [VALUE] [INTERPRETATION]
+
+### 🔍 VOLATILITY INDICATORS
+- Bollinger Bands (20,2): [WIDTH & POSITION]
+- ATR (14): [VALUE & HISTORICAL COMPARISON]
+- Keltner Channels: [POSITION WITHIN CHANNELS]
+
+### 🔍 VOLUME INDICATORS
+- OBV: [TREND & DIVERGENCES]
+- CMF (20): [VALUE & INTERPRETATION]
+- MFI (14): [VALUE & INTERPRETATION]
+
+## 📈 CHART PATTERNS
+
+### 🔍 DETECTED PATTERNS
+[List of identified chart patterns with descriptions]
+
+### 🔍 SUPPORT & RESISTANCE LEVELS
+- Strong Support: $[LEVEL1], $[LEVEL2]
+- Strong Resistance: $[LEVEL1], $[LEVEL2]
+- Key Level to Watch: $[LEVEL]
+
+## 🔗 ON-CHAIN ANALYSIS
+
+### 🔍 NETWORK ACTIVITY
+- Active Addresses (24h): [COUNT] [⬆️/⬇️/↔️] [%CHANGE]
+- Transaction Count (24h): [COUNT] [⬆️/⬇️/↔️] [%CHANGE]
+- Transaction Volume (24h): $[VOLUME] [⬆️/⬇️/↔️] [%CHANGE]
+
+### 🔍 EXCHANGE FLOWS
+- Exchange Inflow (24h): $[VALUE] [⬆️/⬇️/↔️]
+- Exchange Outflow (24h): $[VALUE] [⬆️/⬇️/↔️]
+- Net Flow (24h): $[VALUE] [⬆️/⬇️/↔️]
+- Exchange Balance (% of Supply): [PERCENTAGE]
+
+### 💰 WHALE ACTIVITY
+- Whale Transactions (>$100k): [COUNT] [⬆️/⬇️/↔️]
+- Whale Transaction Volume: $[VOLUME] [⬆️/⬇️/↔️]
+- Top Holder Balance Changes: [NET CHANGE]
+
+### 🔍 SUPPLY DISTRIBUTION
+- Supply Last Active (1d/7d/30d/90d/1y+): [PERCENTAGES]
+- MVRV Ratio: [VALUE] [INTERPRETATION]
+
+## 📱 MARKET SENTIMENT
+
+### 🔍 SOCIAL METRICS
+- Social Volume: [VALUE] [⬆️/⬇️/↔️] [%CHANGE]
+- Social Sentiment: [POSITIVE/NEGATIVE/NEUTRAL]
+- Social Growth (7d): [%CHANGE]
+
+### 🔍 DERIVATIVES METRICS
+- Funding Rate: [PERCENTAGE]
+- Long vs Short Ratio: [RATIO]
+- Open Interest: $[VALUE] [⬆️/⬇️/↔️]
+
+### 🔍 MARKET PSYCHOLOGY
+- Fear & Greed Index: [VALUE] [INTERPRETATION]
+- NUPL: [VALUE] [INTERPRETATION]
+
+## 🎯 TRADING RECOMMENDATION
+
+### 🔍 SIGNAL SUMMARY
+- Overall Signal: [STRONG BUY / BUY / NEUTRAL / SELL / STRONG SELL]
+- Confidence Level: [PERCENTAGE]
+- Time Horizon: [SHORT / MEDIUM / LONG] term
+
+### 🔍 ENTRY STRATEGY
+- Ideal Entry Zone: $[LOW] - $[HIGH]
+- Current Entry Attractiveness: [HIGH / MEDIUM / LOW]
+- Scaling Strategy: [RECOMMENDED APPROACH]
+
+### 🛑 STOP LOSS STRATEGY
+- Recommended Stop Loss: $[PRICE]
+- Stop Loss Basis: [TECHNICAL JUSTIFICATION]
+- Percentage Risk: [PERCENTAGE]%
+
+### 🏁 TAKE PROFIT STRATEGY
+- TP1: $[PRICE] (Exit [PERCENTAGE]% of position)
+- TP2: $[PRICE] (Exit [PERCENTAGE]% of position)
+- TP3: $[PRICE] (Exit [PERCENTAGE]% of position)
+- Risk-Reward Ratio: [RATIO]
+
+## ⚠️ RISK ASSESSMENT
+
+- Volatility Risk: [LOW / MEDIUM / HIGH]
+- Liquidity Risk: [LOW / MEDIUM / HIGH]
+- Correlation Risk: [LOW / MEDIUM / HIGH]
+- Overall Risk Score: [1-10 SCORE]
+- Max Recommended Position Size: [PERCENTAGE]%
+
+## 📝 DATA SOURCES
+
+- Price Data: [SOURCE]
+- On-Chain Data: [SOURCE]
+- Social Data: [SOURCE]
+- Technical Indicators: [SOURCE]
+
+⚠️ DISCLAIMER: This analysis is for educational purposes only and should not be considered financial advice. Always do your own research before making investment decisions.
+
+❓ MISSING DATA INDICATORS: [LIST ANY INDICATORS THAT COULD NOT BE RETRIEVED WITH REASONS]
+```
+
+## Example Scenario Implementation
+
+When a user requests a crypto token technical analysis, implement the following workflow:
+
+1. **Data Collection Phase**:
+
+   - Fetch current price data from multiple sources
+   - Retrieve historical price data for all required timeframes
+   - Query on-chain metrics where available
+   - Collect market sentiment data
+   - Document any API failures or missing data points with ❓ symbol
+
+2. **Analysis Phase**:
+
+   - Calculate all technical indicators across timeframes
+   - Identify chart patterns and key levels
+   - Analyze on-chain metrics for bullish/bearish signals
+   - Evaluate market sentiment indicators
+   - Cross-reference signals across different analysis dimensions
+
+3. **Signal Generation Phase**:
+
+   - Determine overall market bias (bullish/bearish/neutral)
+   - Calculate confidence level based on signal alignment
+   - Generate specific entry/exit levels with mathematical justification
+   - Assess risk parameters and position sizing recommendations
+   - Create multi-stage profit-taking strategy
+
+4. **Output Generation Phase**:
+   - Format analysis according to required template
+   - Add appropriate emojis for all sections and indicators
+   - Ensure all missing data is properly marked
+   - Generate filename with token and date
+   - Save to docs folder in plain text format
+
+## Implementation Rules
+
+- Always fetch real-time data first before any analysis
+- Clearly document all data sources with timestamps
+- Mark any unavailable data with ❓ and explain why it's missing
+- Calculate all indicators from raw data using exact formulas
+- Provide specific, actionable trading recommendations
+- Include both technical and fundamental justifications for signals
+- Generate appropriate confidence levels based on signal agreement
+- Save all analyses in consistent format for later reference
+- Include disclaimers about educational nature of analysis
